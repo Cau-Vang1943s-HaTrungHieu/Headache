@@ -1,8 +1,4 @@
-import math
+num = int(input())
 
-t, p, c = map(int, input().split())
-
-if (t == 1): 
-    print(p * c)
-else:
-    print(math.ceil(p/2 * c))
+digits = [int(digit) for digit in str(num)]
+print(min(digits) + max(digits))
