@@ -1,23 +1,31 @@
-// Ma: H_TINHTONG
-// Ten: Tính tổng
-
-#include <iostream>
-#include <iomanip> // for setprecision
+#include <bits/stdc++.h>
 using namespace std;
 
-double S_n(int n)
-{
-    double sum = 0;
-    for (int i = 1; i <= n; ++i) {
-        sum += 1.0 / (i * (i + 1));
+// Nhân số lớn với số nguyên nhỏ
+string mulBig(string a, int b) {
+    reverse(a.begin(), a.end());
+    string res;
+    int carry = 0;
+    for (int i = 0; i < a.size(); i++) {
+        int da = a[i]-'0';
+        long long prod = 1LL*da*b + carry;
+        res.push_back(char(prod%10 + '0'));
+        carry = prod/10;
     }
-    return sum;
+    while (carry) {
+        res.push_back(char(carry%10 + '0'));
+        carry /= 10;
+    }
+    while (res.size()>1 && res.back()=='0') res.pop_back();
+    reverse(res.begin(), res.end());
+    return res;
 }
 
-int main()
-{
-    int n; cin >> n;
-    cout << fixed << setprecision(5) << S_n(n) << endl;
-
-    return 0;
+int main() {
+    int N; cin >> N;
+    string fact = "1";
+    for (int i = 2; i <= N; i++) {
+        fact = mulBig(fact, i);
+    }
+    cout << fact << "\n";
 }
