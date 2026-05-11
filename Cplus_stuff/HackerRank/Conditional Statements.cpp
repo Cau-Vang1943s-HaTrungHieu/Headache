@@ -1,3 +1,5 @@
+// Web: HackerRank
+
 #include <iostream>
 using namespace std;
 

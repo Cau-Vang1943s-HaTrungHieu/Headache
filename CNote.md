@@ -1,5 +1,15 @@
 # C plus plus
 
+## Introduction to C++ development
+- Approach to a C++ problem
+    Step 1: Define the problem to solve (initial idea) 
+    Step 2: Design a solution
+    Step 3: Write a program that implements the solution
+    Step 4: Compilation
+    Step 5: Link object files
+    Step 6: Test program
+    If Step 6 fails, proceed to Step 7: Debug the program and return to Step 4.
+, 
 ## Làm tròn số:
    - Làm tròn một số thực đến một con số thập phân nào đó.
    - Ở phần gọi thư viện nhớ ghi dòng lệnh này để sử dụng hàm setprecision.
@@ -63,3 +73,9 @@ return 0;
 // Randomize operator
 char math_op = “+-*”[rand() % 3];
 ```
+
+## Built-in functions:
+### cctype library
+- `tolower() / toupper()`
+
+

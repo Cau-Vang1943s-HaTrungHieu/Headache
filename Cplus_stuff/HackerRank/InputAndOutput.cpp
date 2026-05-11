@@ -1,3 +1,5 @@
+// Web: HackerRank
+
 #include <cmath>
 #include <cstdio>
 #include <vector>
