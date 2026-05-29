@@ -1,6 +1,8 @@
 *.txt
 *.exe
 *.odt
+*.cdp
+*.layout
 output/
 .vscode/
 goUPCoderSetup/

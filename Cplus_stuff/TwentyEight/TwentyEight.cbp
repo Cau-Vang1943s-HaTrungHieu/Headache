@@ -5,6 +5,7 @@
 		<Option title="TwentyEight" />
 		<Option pch_mode="2" />
 		<Option compiler="mingw64" />
+		<Option virtualFolders="OOP/" />
 		<Build>
 			<Target title="Debug">
 				<Option output="bin/Debug/TwentyEight" prefix_auto="1" extension_auto="1" />
@@ -32,10 +33,23 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="OperatorOverloading_Insertion.cpp" />
+		<Unit filename="Classes.cpp">
+			<Option virtualFolder="OOP/" />
+		</Unit>
+		<Unit filename="OperatorOverloading_Insertion.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+			<Option virtualFolder="OOP/" />
+		</Unit>
 		<Unit filename="Operator_overloading_Plus_Comparison.cpp">
 			<Option compile="0" />
 			<Option link="0" />
+			<Option virtualFolder="OOP/" />
+		</Unit>
+		<Unit filename="Struct.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+			<Option virtualFolder="OOP/" />
 		</Unit>
 		<Unit filename="main.cpp">
 			<Option compile="0" />
