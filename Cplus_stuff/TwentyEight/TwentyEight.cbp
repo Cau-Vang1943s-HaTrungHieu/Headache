@@ -34,6 +34,18 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="Classes.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+			<Option virtualFolder="OOP/" />
+		</Unit>
+		<Unit filename="Constructor_Destructor.cpp">
+			<Option compile="0" />
+			<Option link="0" />
+			<Option virtualFolder="OOP/" />
+		</Unit>
+		<Unit filename="Encapsulation_GetSet.cpp">
+			<Option compile="0" />
+			<Option link="0" />
 			<Option virtualFolder="OOP/" />
 		</Unit>
 		<Unit filename="OperatorOverloading_Insertion.cpp">
@@ -44,6 +56,9 @@
 		<Unit filename="Operator_overloading_Plus_Comparison.cpp">
 			<Option compile="0" />
 			<Option link="0" />
+			<Option virtualFolder="OOP/" />
+		</Unit>
+		<Unit filename="Static.cpp">
 			<Option virtualFolder="OOP/" />
 		</Unit>
 		<Unit filename="Struct.cpp">
