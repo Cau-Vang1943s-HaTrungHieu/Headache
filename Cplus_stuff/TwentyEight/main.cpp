@@ -1,82 +1,103 @@
 #include <iostream>
+#include <algorithm>
 
 struct Fraction
 {
-    int nominator, denominator;
+    int nominator;
+    int denominator;
 
-    void simplification();
-
-    bool operator == (const Fraction& other) const
+    friend std::istream& operator >> (std::istream& input, Fraction& frac)
     {
-        // Make local copies since other is constant-bound
-        Fraction f1 = *this;
-        Fraction f2 = other;
-        f1.simplification();
-        f2.simplification();
-        return (f1.nominator == f2.nominator and f1.denominator == f2.denominator);
+        input >> frac.nominator >> frac.denominator;
+        return input;
     }
 
-    bool operator != (const Fraction& other) const
+    friend std::ostream& operator << (std::ostream& output, Fraction frac)
     {
-        return !(*this == other); // why *this? but not this
+        int gcd = std::__gcd(frac.nominator, frac.denominator);
+        frac.nominator /= gcd;
+        frac.denominator /= gcd;
+        output << frac.nominator << "/" << frac.denominator;
+        return output;
     }
 
-    Fraction operator + (const Fraction& other) const
+    bool operator != (Fraction frac)
     {
-        Fraction result;
-        result.nominator = this->nominator * other.denominator + other.nominator * this->denominator;
-        result.denominator = this->denominator * other.denominator;
-        result.simplification(); // always simply after operation
-        return result;
+        return nominator * frac.denominator != denominator * frac.nominator;
     }
 };
 
-std::istream& operator >> (std::istream& input, Fraction& fraction)
+struct MixedNumber
 {
-    input >> fraction.nominator >> fraction.denominator;
-    return input;
-}
+    Fraction fraction;
+    int whole;
 
-std::ostream& operator << (std::ostream& output, const Fraction& fraction)
-{
-    output << fraction.nominator << "/" << fraction.denominator;
-    return output;
-}
-
-int gcd(int a, int b)
-{
-    while (b != 0)
+    friend std::istream& operator >> (std::istream& input, MixedNumber& figure)
     {
-        int temp = a % b;
-        a = b;
-        b = temp;
+        input >> figure.whole >> figure.fraction;
+        return input;
     }
-    return a;
-}
+
+    friend std::ostream& operator << (std::ostream& output, MixedNumber figure)
+    {
+        if (figure.whole != 0) output << figure.whole << " ";
+        output << figure.fraction;
+        return output;
+    }
+
+    MixedNumber toImproperFraction(std::string str = "true")
+    {
+        Fraction temp;
+        MixedNumber result;
+        temp.nominator = whole * fraction.denominator + fraction.nominator;
+        temp.denominator = fraction.denominator;
+
+        int gcd = std::__gcd(temp.nominator, temp.denominator);
+        temp.nominator /= gcd;
+        temp.denominator /= gcd;
+
+        if (str == "false")
+        {
+            result.whole = 0;
+            result.fraction = temp;
+        }
+        else
+        {
+            result.fraction.nominator = temp.nominator;
+            result.fraction.denominator = temp.denominator;
+            result.whole = temp.nominator / temp.denominator;
+        }
+        return result;
+    }
+    bool operator != (MixedNumber other)
+    {
+        MixedNumber a = toImproperFraction("false");
+        MixedNumber b = other.toImproperFraction("false");
+        return a.fraction != b.fraction;
+    }
+
+    int combination()
+    {
+        return whole + fraction.nominator + fraction.denominator;
+    }
+
+    bool operator > (MixedNumber other)
+    {
+        return combination() > other.combination();
+    }
+};
 
 int main()
 {
-    Fraction fraction;
-    Fraction fracSum{0, 1}; // Remember to initialise a structure or a class
-    while (std::cin >> fraction)
-    {
-        fracSum = fracSum + fraction;
-    }
+    MixedNumber a, b;
+    std::cin >> a >> b;
+    std::string str; std::cin >> str;
 
-    std::cout << fracSum << std::endl;
+    a = a.toImproperFraction(str);
+    b = b.toImproperFraction(str);
 
+    std::cout << (a != b ? "TRUE" : "FALSE") << std::endl;
+    std::cout << (a > b ? "TRUE" : "FALSE") << std::endl;
+    std::cout << a << std::endl << b << std::endl;
     return 0;
-}
-
-void Fraction::simplification()
-{
-    int GCD = gcd(nominator, denominator);
-    nominator /= GCD;
-    denominator /= GCD;
-
-    if (denominator < 0)
-    {
-        nominator = -nominator;
-        denominator = -denominator;
-    }
 }

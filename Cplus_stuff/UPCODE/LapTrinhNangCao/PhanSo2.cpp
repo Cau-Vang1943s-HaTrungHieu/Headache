@@ -2,46 +2,32 @@
 
 struct Fraction
 {
-    int nominator, denominator;
-    
+    int nominator;
+    int denominator;
+
     void simplification();
 
-    bool operator == (const Fraction& other) const
+    bool operator == (Fraction other)
     {
-        // Make local copies since other is constant-bound
-        Fraction f1 = *this;
-        Fraction f2 = other;
-        f1.simplification();
-        f2.simplification();
-        return (f1.nominator == f2.nominator and f1.denominator == f2.denominator);
+        simplification();
+        other.simplification();
+        return (nominator == other.nominator or denominator == other.denominator);
     }
 
-    bool operator != (const Fraction& other) const
+    bool operator != (Fraction other)
     {
-        return !(*this == other); // why *this? but not this
+        return !(*this == other);
     }
 
-    Fraction operator + (const Fraction& other) const
+    Fraction operator + (Fraction other)
     {
         Fraction result;
-        result.nominator = this->nominator * other.denominator + other.nominator * this->denominator;
-        result.denominator = this->denominator * other.denominator;
-        result.simplification(); // always simply after operation
+        result.nominator = nominator * other.denominator + other.nominator * denominator;
+        result.denominator = denominator * other.denominator;
+        result.simplification();
         return result;
     }
 };
-
-std::istream& operator >> (std::istream& input, Fraction& fraction)
-{
-    input >> fraction.nominator >> fraction.denominator;
-    return input;
-}
-
-std::ostream& operator << (std::ostream& output, const Fraction& fraction)
-{
-    output << fraction.nominator << "/" << fraction.denominator;
-    return output;
-}
 
 int gcd(int a, int b)
 {
@@ -54,16 +40,58 @@ int gcd(int a, int b)
     return a;
 }
 
+std::istream& operator >> (std::istream& input, Fraction& frac)
+{
+    input >> frac.nominator >> frac.denominator;
+    return input;
+}
+
+std::ostream& operator << (std::ostream& output, Fraction& frac)
+{
+    output << frac.nominator << "/" << frac.denominator;
+    return output;
+}
+
+struct FractionArray
+{
+    Fraction indices[999];
+    int s1ze;
+
+    Fraction& operator [] (int index)
+    {
+        return indices[index];
+    }
+};
+
+std::istream& operator >> (std::istream& input, FractionArray& arr)
+{
+    arr.s1ze = 0;
+    while (input >> arr.indices[arr.s1ze])
+    {
+        arr.s1ze++;
+    }
+    return input;
+}
+
+std::ostream& operator << (std::ostream& output, FractionArray& arr)
+{
+    for (int i = 0; i < arr.s1ze; i++)
+    {
+        output << arr.indices[i] << " ";
+    }
+    return output;
+}
+
 int main()
 {
-    Fraction fraction;
-    Fraction fracSum{0, 1}; // Remember to initialise a structure or a class
-    while (std::cin >> fraction)
+    FractionArray arr;
+    std::cin >> arr;
+    Fraction fracsum{0, 1};
+    for (int i = 0; i < arr.s1ze; i++)
     {
-        fracSum = fracSum + fraction;
+        fracsum = fracsum + arr[i];
     }
-
-    std::cout << fracSum << std::endl;
+    std::cout << fracsum << std::endl;
 
     return 0;
 }
@@ -74,7 +102,7 @@ void Fraction::simplification()
     nominator /= GCD;
     denominator /= GCD;
 
-    if (denominator < 0) 
+    if (denominator < 0)
     {
         nominator = -nominator;
         denominator = -denominator;
