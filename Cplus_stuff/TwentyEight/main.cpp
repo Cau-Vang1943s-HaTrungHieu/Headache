@@ -6,98 +6,82 @@ struct Fraction
     int nominator;
     int denominator;
 
+    void simplification()
+    {
+        int gcd = std::__gcd(nominator, denominator);
+        nominator /= nominator;
+        denominator /= denominator;
+
+        if (denominator < 0)
+        {
+            nominator = -nominator;
+            denominator = -denominator;
+        }
+    }
+
     friend std::istream& operator >> (std::istream& input, Fraction& frac)
     {
         input >> frac.nominator >> frac.denominator;
         return input;
     }
 
-    friend std::ostream& operator << (std::ostream& output, Fraction frac)
+    friend std::ostream& operator << (std::ostream& output, const Fraction frac)
     {
-        int gcd = std::__gcd(frac.nominator, frac.denominator);
-        frac.nominator /= gcd;
-        frac.denominator /= gcd;
         output << frac.nominator << "/" << frac.denominator;
         return output;
     }
 
-    bool operator != (Fraction frac)
+    bool operator < (Fraction& other)
     {
-        return nominator * frac.denominator != denominator * frac.nominator;
+        return (double) nominator / denominator < (double) other.nominator / other.denominator;
     }
 };
 
-struct MixedNumber
+template<typename T>
+struct Array
 {
-    Fraction fraction;
-    int whole;
+    T values[99];
+    int size;
 
-    friend std::istream& operator >> (std::istream& input, MixedNumber& figure)
+    void input()
     {
-        input >> figure.whole >> figure.fraction;
-        return input;
+        T n;
+        std::cin >> n;
+        values[size++] = n;
+        return;
     }
 
-    friend std::ostream& operator << (std::ostream& output, MixedNumber figure)
+    T min()
     {
-        if (figure.whole != 0) output << figure.whole << " ";
-        output << figure.fraction;
-        return output;
-    }
-
-    MixedNumber toImproperFraction(std::string str = "true")
-    {
-        Fraction temp;
-        MixedNumber result;
-        temp.nominator = whole * fraction.denominator + fraction.nominator;
-        temp.denominator = fraction.denominator;
-
-        int gcd = std::__gcd(temp.nominator, temp.denominator);
-        temp.nominator /= gcd;
-        temp.denominator /= gcd;
-
-        if (str == "false")
+        T min = values[0];
+        for (int i = 1; i < size; i++)
         {
-            result.whole = 0;
-            result.fraction = temp;
+            if (values[i] < min) min = values[i];
         }
-        else
-        {
-            result.fraction.nominator = temp.nominator;
-            result.fraction.denominator = temp.denominator;
-            result.whole = temp.nominator / temp.denominator;
-        }
-        return result;
-    }
-    bool operator != (MixedNumber other)
-    {
-        MixedNumber a = toImproperFraction("false");
-        MixedNumber b = other.toImproperFraction("false");
-        return a.fraction != b.fraction;
-    }
-
-    int combination()
-    {
-        return whole + fraction.nominator + fraction.denominator;
-    }
-
-    bool operator > (MixedNumber other)
-    {
-        return combination() > other.combination();
+        return min;
     }
 };
 
 int main()
 {
-    MixedNumber a, b;
-    std::cin >> a >> b;
-    std::string str; std::cin >> str;
+    char choice;
+    Array<int> int_array;
+    Array<double> double_array;
+    Array<Fraction> fraction_array;
 
-    a = a.toImproperFraction(str);
-    b = b.toImproperFraction(str);
+    while (std::cin >> choice)
+    {
+        if (choice == 'a') int_array.input();
+        else if (choice == 'b') double_array.input();
+        else if (choice == 'c') fraction_array.input();
+    }
 
-    std::cout << (a != b ? "TRUE" : "FALSE") << std::endl;
-    std::cout << (a > b ? "TRUE" : "FALSE") << std::endl;
-    std::cout << a << std::endl << b << std::endl;
-    return 0;
+    if (int_array.size > 0) std::cout << int_array.min() << std::endl;
+    else std::cout << "khong co" << std::endl;
+
+    if (double_array.size > 0) std::cout << double_array.min() << std::endl;
+    else std::cout << "khong co" << std::endl;
+
+    if (fraction_array.size > 0) std::cout << fraction_array.min() << std::endl;
+    else std::cout << "khong co" << std::endl;
 }

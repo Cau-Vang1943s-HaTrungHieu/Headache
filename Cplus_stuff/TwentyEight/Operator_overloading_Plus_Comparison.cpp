@@ -1,3 +1,18 @@
+/**
+
+By default, we can only use operators for the basic operands such as:
+    numbers (int, double, etc.), strings (5 + 5)
+In order to use the operators on the custom type (class, struct), you need to overload it with a new function
+So instead of function, overloading operators really reduce the amount of jargon that we made in the coding process.
+
+Syntax:
+[type] operator [operator symbol] ([custom type] [instance])
+{
+}
+
+**/
+
+
 #include <iostream>
 using namespace std;
 
