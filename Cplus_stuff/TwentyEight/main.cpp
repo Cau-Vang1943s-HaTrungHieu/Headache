@@ -1,87 +1,79 @@
 #include <iostream>
-#include <algorithm>
 
-struct Fraction
+struct Array
 {
-    int nominator;
-    int denominator;
+    int values[99];
+    int s1ze = 0;
 
-    void simplification()
+    int operator [] (int index)
     {
-        int gcd = std::__gcd(nominator, denominator);
-        nominator /= nominator;
-        denominator /= denominator;
-
-        if (denominator < 0)
-        {
-            nominator = -nominator;
-            denominator = -denominator;
-        }
+        return values[index];
     }
 
-    friend std::istream& operator >> (std::istream& input, Fraction& frac)
+    friend std::istream& operator >> (std::istream& input, Array& arr)
     {
-        input >> frac.nominator >> frac.denominator;
+        input >> arr.s1ze;
+        for (int i = 0; i < arr.s1ze; i++)
+        {
+            input >> arr.values[i];
+        }
         return input;
     }
 
-    friend std::ostream& operator << (std::ostream& output, const Fraction frac)
+    friend std::ostream& operator << (std::ostream& output, Array arr)
     {
-        output << frac.nominator << "/" << frac.denominator;
+        for (int i = 0; i < arr.s1ze; i++)
+        {
+            output << arr.values[i] << " ";
+        }
         return output;
     }
 
-    bool operator < (Fraction& other)
+    Array& operator = (Array& other)
     {
-        return (double) nominator / denominator < (double) other.nominator / other.denominator;
-    }
-};
-
-template<typename T>
-struct Array
-{
-    T values[99];
-    int size;
-
-    void input()
-    {
-        T n;
-        std::cin >> n;
-        values[size++] = n;
-        return;
-    }
-
-    T min()
-    {
-        T min = values[0];
-        for (int i = 1; i < size; i++)
+        s1ze = other.s1ze;
+        if (*this != other)
         {
-            if (values[i] < min) min = values[i];
+            for (int i = 0; i < s1ze; i++)
+            {
+                this->values[i] = other.values[i];
+            }
         }
-        return min;
+        return *this;
+    }
+
+    Array& operator + (Array& other)
+    {
+        Array result;
+        result.s1ze = s1ze;
+        for (int i = 0; i < s1ze; i++)
+        {
+            result.values[i] = values[i] + other.values[i];
+        }
+        return result;
+    }
+
+    bool operator == (Array& other)
+    {
+        if (s1ze != other.s1ze) return false;
+        for (int i = 0; i < s1ze; i++)
+        {
+            if (values[i] != other.values[i]) return false;
+        }
+        return true;
+    }
+
+    bool operator != (Array& other)
+    {
+        return !(*this == other);
     }
 };
 
 int main()
 {
-    char choice;
-    Array<int> int_array;
-    Array<double> double_array;
-    Array<Fraction> fraction_array;
+    Array arr1, arr2; std::cin >> arr1 >> arr2;
 
-    while (std::cin >> choice)
-    {
-        if (choice == 'a') int_array.input();
-        else if (choice == 'b') double_array.input();
-        else if (choice == 'c') fraction_array.input();
-    }
+    std::cout << (arr1 == arr2 ? "yes" : "no") << std::endl;
 
-    if (int_array.size > 0) std::cout << int_array.min() << std::endl;
-    else std::cout << "khong co" << std::endl;
-
-    if (double_array.size > 0) std::cout << double_array.min() << std::endl;
-    else std::cout << "khong co" << std::endl;
-
-    if (fraction_array.size > 0) std::cout << fraction_array.min() << std::endl;
-    else std::cout << "khong co" << std::endl;
+    return 0;
 }

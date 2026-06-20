@@ -2,39 +2,46 @@
 
 struct Array
 {
-    int a[10]; // fixed storage for up to 10 integers
-    int n; // the actual number of elements currently in use
+    int values[10]; // fixed storage for up to 10 integers
+    int size; // the actual number of elements currently in use
 
-    Array& operator = (const Array& other) // Assignment operator
+    int& operator [] (int index) // Index operator
+    {
+        return values[index];
+    }
+
+    void operator = (const Array& other) // Assignment operator (Array return type also works)
     {
         if (this != &other) // avoid overwriting current array.
         {
-            n = other.n;
-            for (int i = 0; i < n; i++)
+            size = other.size;
+            for (int i = 0; i < size; i++)
             {
-                a[i] = other.a[i];
+                values[i] = other.values[i];
             }
         }
-        return *this;
+        return;
     }
 
     Array operator + (const Array& other) // addition operator
     {
         Array result;
-        result.n = n;
-        for (int i = 0; i < n; i++)
+        result.size = std::max(size, other.size);
+
+        for (int i = 0; i < result.size; i++)
         {
-            result.a[i] = a[i] + other.a[i];
+            if (i < size and i < other.size) result.values[i] = values[i] + other.values[i];
+            else result[i] = (i < size ? values[i] : other.values[i]);
         }
         return result;
     }
  
     bool operator == (const Array& other) const // equality operator
     {
-        if (n != other.n) return false;
-        for (int i = 0; i < n; i++)
+        if (size != other.size) return false;
+        for (int i = 0; i < size; i++)
         {
-            if (a[i] != other.a[i]) return false;
+            if (values[i] != other.values[i]) return false;
         }
         return true;
     }
@@ -42,11 +49,6 @@ struct Array
     bool operator != (const Array& other) const // inequality operator
     {
         return !(*this == other);
-    }
-
-    int& operator [] (int index) // Index operator
-    {
-        return a[index];
     }
 };
 
@@ -58,19 +60,19 @@ struct Array
 
 std::istream& operator >> (std::istream& input, Array& arr)
 {
-    input >> arr.n;
-    for (int i = 0; i < arr.n; i++)
+    input >> arr.size;
+    for (int i = 0; i < arr.size; i++)
     {
-        input >> arr.a[i];
+        input >> arr.values[i];
     }
     return input;
 }
 
 std::ostream& operator << (std::ostream& output, Array& arr)
 {
-    for (int i = 0; i < arr.n; i++) 
+    for (int i = 0; i < arr.size; i++) 
     {
-        output << arr.a[i] << " ";
+        output << arr.values[i] << " ";
     }
     return output;
 }
