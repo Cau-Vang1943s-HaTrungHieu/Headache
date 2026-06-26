@@ -1,84 +1,67 @@
 #include <iostream>
 
-struct Array
+struct Node
 {
-    int a[10];
-    int n;
-
-    Array& operator = (const Array& other)
-    {
-        if (this != &other)
-        {
-            n = other.n;
-            for (int i = 0; i < n; i++) 
-            {
-                a[i] = other.a[i];
-            }
-        }
-        return *this;
-    }
-
-    Array operator + (Array& other)
-    {
-        Array result;
-        result.n = n;
-        for (int i = 0; i < n; i++) 
-        {
-            result.a[i] = a[i] + other.a[i];
-        }
-        return result;
-    }
-
-    bool operator == (Array other)
-    {
-        if (n != other.n) return false;
-        for (int i = 0; i < n; i++)
-        {
-            if (a[i] != other.a[i]) return false;
-        }
-        return true;
-    }
-
-    bool operator != (Array other)
-    {
-        return !(*this == other);
-    }
-
-    int& operator [] (int index)
-    {
-        return a[index];
-    }
+    int data;
+    Node* next;
 };
 
-std::istream& operator >> (std::istream& input, Array& arr) 
+Node* create_node(int data)
 {
-    input >> arr.n;
-    for (int i = 0; i < arr.n; i++)
-    {
-        input >> arr[i];
-    }
-    return input;
+    Node* new_node = new Node;
+    if (new_node == NULL) return NULL; // Extra step to check if it is possible to create a new node
+    new_node->data = data;
+    new_node->next = NULL; // Remember to point it to NULL
+    return new_node;
 }
 
-std::ostream& operator << (std::ostream& output, Array& arr)
+void print_list(Node* head)
 {
-    for (int i = 0; i < arr.n; i++)
+    Node* current = head;
+    while (current != NULL)
     {
-        output << arr[i];
+        std::cout << current->data << " -> ";
+        current = current->next;
     }
-    return output;
+    std::cout << "NULL";
 }
 
+void delete_list(Node* head)
+{
+    Node* current = head;
+    Node* next_node;
+    while (current != NULL)
+    {
+        next_node = current->next;
+        delete current;
+        current = next_node;
+    }
+    std::cout << "\nThe list has been removed!" << std::endl;
+}
 
 int main()
 {
-    Array arr1, arr2;
-    std::cin >> arr1;
-    std::cin >> arr2;
+    Node* n, * t, * h = NULL;
+    int data;
+    
+    while (std::cin >> data)
+    {
+        n = create_node(data);
+        
+        if (h == NULL) // First node becomes head and tail
+        {
+            h = n;
+            t = n;
+        }
+        else 
+        {
+            t->next = n;
+            t = t->next;
+        }
+    }
 
-    if (arr1 == arr2) std::cout << "yes";
-    else std::cout << "no";
-    std::cout <<  std::endl;
+    print_list(h);
+    delete_list(h);
 
     return 0;
 }
