@@ -3,55 +3,56 @@
 
 struct Rectangle
 {
-    int width, height;
+    double height, width;   // Rectangle attributes must be of double
 
     friend std::istream& operator >> (std::istream& input, Rectangle& figure)
     {
-        input >> figure.width >> figure.height;
+        input >> figure.height >> figure.width;
         return input;
     }
 
     friend std::ostream& operator << (std::ostream& output, Rectangle figure)
     {
-        output << "[HCN] " << figure.width << "," << figure.height;
+        output << "[HCN] " << figure.height << "," << figure.width;
         return output;
     }
 
-    double perimeter() const
+    double perimeter()
     {
-        return (double) (width + height) * 2;
+        return (double) (height + width) * 2;
     }
 
-    bool operator < (Rectangle& other)
+    bool operator < (Rectangle other)
     {
         return perimeter() < other.perimeter();
     }
 
-    double operator + (double n)
+    double operator + (double num)
     {
-        return perimeter() + n;
+        return perimeter() + num;
     }
 };
-
-double operator + (double n, const Rectangle& rectangle)
-{
-    return n + rectangle.perimeter();
-}
 
 template<typename T>
 struct Array
 {
-    T values[100];
+    T values[1000];
     int size = 0;
 
     friend std::istream& operator >> (std::istream& input, Array& arr)
     {
         T temp;
-        while (input >> temp)
-        {
-            arr.values[arr.size++] = temp;
-        }
+        while (input >> temp) arr.values[arr.size++] = temp;
         return input;
+    }
+
+    friend std::ostream& operator << (std::ostream& output, Array arr)
+    {
+        for (int i = 0; i < arr.size; i++)
+        {
+            output << arr.values[i] << std::endl;
+        }
+        return output;
     }
 
     T min()
@@ -67,10 +68,7 @@ struct Array
     double sum()
     {
         double result = 0;
-        for (int i = 0; i < size; i++)
-        {
-            result = values[i] + result;
-        }
+        for (int i = 0; i < size; i++) result = values[i] + result;
         return result;
     }
 };
@@ -81,19 +79,22 @@ void execute(char c)
     Array<T> arr;
     std::cin >> arr;
     std::cout << arr.min() << std::endl;
-    if (c == 'H') std::cout << std::fixed << std::setprecision(1);
+    if (c == 'H')
+    {
+        std::cout << std::fixed << std::setprecision(1);
+    }
     std::cout << arr.sum();
     return;
 }
 
 int main()
 {
-    char c; std::cin >> c;
-
-    switch (c)
+    char type;
+    std::cin >> type;
+    switch (type)
     {
-        case 'N': execute<int>('N'); break;
-        case 'H': execute<Rectangle>('H'); break;
+    case 'N': execute<int>('N'); break;
+    case 'H': execute<Rectangle>('H'); break;
     }
 
     return 0;

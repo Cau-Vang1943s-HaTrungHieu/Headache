@@ -4,47 +4,43 @@ struct SoMoi
 {
     int A;
 
-    friend std::istream& operator >> (std::istream& input, SoMoi& somoi)
+    friend std::istream& operator >> (std::istream& input, SoMoi& sm)
     {
-        input >> somoi.A;
+        input >> sm.A;
         return input;
     }
 
-    friend std::ostream& operator << (std::ostream& output, SoMoi somoi)
+    friend std::ostream& operator << (std::ostream& output, const SoMoi sm)
     {
-        output << "[SoMoi] " << somoi.A;
+        output << "[SoMoi] " << sm.A;
         return output;
     }
 
-    int digitSum()
+    int digits_sum()
     {
-        int result = 0, temp = A;
-        while (temp > 0)
+        int sum = 0;
+        int temp = A;
+        while (temp != 0)
         {
-            result += temp % 10;
+            sum += temp % 10;
             temp /= 10;
         }
-        return result;
+        return sum;
     }
 
-    bool operator > (SoMoi& other)
+    bool operator > (SoMoi other)
     {
-        return digitSum() > other.digitSum();
+        return digits_sum() > other.digits_sum();
     }
 
-    SoMoi operator + (SoMoi& other)
+    SoMoi operator + (SoMoi other)
     {
         SoMoi result;
-        result.A = digitSum() + other.digitSum();
+        result.A = digits_sum() + other.digits_sum();
         return result;
     }
 
-    int operator + (int num)
-    {
-        return num + digitSum();
-    }
-
-    bool operator == (SoMoi& other)
+    bool operator == (SoMoi other)
     {
         return A == other.A;
     }
@@ -53,7 +49,7 @@ struct SoMoi
 template<typename T>
 struct Array
 {
-    T values[100];
+    T values[1000];
     int size = 0;
 
     friend std::istream& operator >> (std::istream& input, Array& arr)
@@ -63,57 +59,54 @@ struct Array
         return input;
     }
 
-    T max()
+    T maxNum()
     {
         T result = values[0];
-        for (int i = 1; i < size; i++)
+        for (int i = 0; i < size; i++)
         {
             if (values[i] > result) result = values[i];
         }
         return result;
     }
 
-    int max_count()
+    int maxNum_count()
     {
         int count = 0;
         for (int i = 0; i < size; i++)
         {
-            if (values[i] == max()) count++;
+            if (values[i] == maxNum()) count++;
         }
         return count;
     }
 
-    int sum()
+    T sum()
     {
-        int result = 0;
+        T result{0};
         for (int i = 0; i < size; i++)
         {
-            result = values[i] + result;;
+            result = result + values[i];
         }
         return result;
     }
 };
 
 template<typename T>
-void execute(char c)
+void execute(char choice)
 {
     Array<T> arr;
     std::cin >> arr;
-    std::cout << arr.max() << std::endl;
-    std::cout << arr.max_count() << std::endl;
-    std::cout << (c == 'M' ? "[SoMoi]" : "");
+    std::cout << arr.maxNum() << std::endl;
+    std::cout << arr.maxNum_count() << std::endl;
     std::cout << arr.sum() << std::endl;
 }
 
 int main()
 {
-    char c; std::cin >> c;
-
-    switch(c)
+    char choice; std::cin >> choice;
+    switch (choice)
     {
-        case 'N': execute<int>('N'); break;
-        case 'M': execute<SoMoi>('M'); break;
+    case 'N': execute<int>(choice); break;
+    case 'M': execute<SoMoi>(choice); break;
     }
-
     return 0;
 }

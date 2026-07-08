@@ -1,17 +1,23 @@
 #include <iostream>
 
-template<typename T>
-struct M1CArray
+struct M1C
 {
-    T values[99];
+    int values[99];
     int size = 0;
-
     void nhap()
     {
-        T temp;
+        int temp;
         while (std::cin >> temp)
         {
             values[size++] = temp;
+        }
+    }
+
+    void xuat()
+    {
+        for (int i = 0; i < size; i++)
+        {
+            std::cout << values[i] << " ";
         }
     }
 
@@ -24,19 +30,13 @@ struct M1CArray
         }
         return result;
     }
-
-    void xuat()
-    {
-        std::cout << tong();
-    }
 };
 
 int main()
 {
-    M1CArray<int> arr;
-
-    arr.nhap();
-    arr.xuat();
+    M1C array;
+    array.nhap();
+    std::cout << array.tong() << std::endl;
 
     return 0;
 }

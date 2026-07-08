@@ -55,7 +55,7 @@ void deleteList(Node* head)
     while (current != NULL)
     {
         nextNode = current->next; // Save the next node
-        delete current; // Free the current node
+        delete current; // Free the current node, doesn't delete the pointer
         current = nextNode; // Move to the next node
     }
 }
@@ -89,13 +89,13 @@ int main()
     /*
         Actually "n = new Node" doesn't explicitly create a new node 
         at all. It requests memory from the heap and constructs a Node object
-        from there.
+        from there then has n point to that new node.
     */
 
     n = new Node; // Make n leave the old node and point to a new one
     n->data = 2; // Assign the value 2 to the data of that node.
     t->next = n; // Extend pointer next of t to reach the new node.
-    t = t->next; // Update: Make t fully point to the new node where n is pointing.
+    t = t->next; // Update tail: Make t point to what t->next or n is pointing to
     /*
         Great, you created your second node, keep this up and you
         will have a long list of nodes soon.

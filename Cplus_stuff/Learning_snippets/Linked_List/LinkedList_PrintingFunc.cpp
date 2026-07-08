@@ -33,6 +33,17 @@ Node* createList(int nodeNumber)
     return head; // return the head pointer so caller can use the list
 }
 
+void print_list(Node* head)
+{
+    Node* current = head;
+    while (current != NULL)
+    {
+        std::cout << current->data << " -> ";
+        current = current->next;
+    }
+    std::cout << "NULL";
+}
+
 void delete_list(Node* head)
 {
     Node* current = head;
@@ -50,13 +61,7 @@ int main()
     Node* h = createList(5); // create list with nodes starting with head
 
     // Print the list
-    Node* current = h;
-    while (current != NULL)
-    {
-        std::cout << current->data << " ";
-        current = current->next;
-    }
-    std::cout << std::endl;
+    print_list(h);
 
     delete_list(h);
 

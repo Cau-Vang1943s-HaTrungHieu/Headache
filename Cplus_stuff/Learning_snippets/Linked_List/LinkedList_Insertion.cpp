@@ -63,7 +63,7 @@ Node* insert_here(Node* head, int position, int value)
     // If position is out of bounds (too large), just insert at the end
     if (current == NULL)
     {
-        std::cout << "Out of bound, inserting at the end.";
+        std::cout << "Out of bound, inserting at the end...";
         current = head;
         while (current->next != NULL) current = current->next;        
         current->next = new_node;

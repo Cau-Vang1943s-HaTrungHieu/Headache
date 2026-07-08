@@ -1,67 +1,102 @@
 #include <iostream>
 
-struct Node
+struct SoDao
 {
-    int data;
-    Node* next;
+    int num;
+
+    friend std::istream& operator >> (std::istream& input, SoDao& sd)
+    {
+        input >> sd.num;
+        return input;
+    }
+
+    friend std::ostream& operator << (std::ostream& output, SoDao sd)
+    {
+        output << "[SoDao] " << sd.num;
+        return output;
+    }
+
+    int reversed_num()
+    {
+        int result = 0;
+        int temp = num;
+        while (temp != 0)
+        {
+            result = result * 10 + temp % 10;
+            temp /= 10;
+        }
+        return result;
+    }
+
+    bool operator > (SoDao other)
+    {
+        return reversed_num() > other.reversed_num();
+    }
+
+    int operator + (int n)
+    {
+        return reversed_num() + n;
+    }
 };
 
-Node* create_node(int data)
+template<typename T>
+struct Array
 {
-    Node* new_node = new Node;
-    if (new_node == NULL) return NULL; // Extra step to check if it is possible to create a new node
-    new_node->data = data;
-    new_node->next = NULL; // Remember to point it to NULL
-    return new_node;
-}
+    T values[99];
+    int size = 0;
 
-void print_list(Node* head)
-{
-    Node* current = head;
-    while (current != NULL)
+    friend std::istream& operator >> (std::istream& input, Array& arr)
     {
-        std::cout << current->data << " -> ";
-        current = current->next;
+        input >> arr.values[arr.size++];
+        return input;
     }
-    std::cout << "NULL";
-}
 
-void delete_list(Node* head)
-{
-    Node* current = head;
-    Node* next_node;
-    while (current != NULL)
+    friend std::ostream& operator << (std::ostream& output, Array arr)
     {
-        next_node = current->next;
-        delete current;
-        current = next_node;
+        if (arr.size == 0) output << "khong co\nkhong co\n";
+        else
+        {
+            output << arr.sum() << std::endl;
+            output << arr.max_num() << std::endl;
+        }
+        return output;
     }
-    std::cout << "\nThe list has been removed!" << std::endl;
-}
+
+    int sum()
+    {
+        int result = 0;
+        for (int i = 0; i < size; i++)
+        {
+            result = values[i] + result;
+        }
+        return result;
+    }
+
+    T max_num()
+    {
+        T result = values[0];
+        for (int i = 0; i < size; i++)
+        {
+            if (values[i] > result) result = values[i];
+        }
+        return result;
+    }
+};
 
 int main()
 {
-    Node* n, * t, * h = NULL;
-    int data;
-    
-    while (std::cin >> data)
+    char order;
+    Array<int> intArr;
+    Array<SoDao> sdArr;
+
+    while (std::cin >> order)
     {
-        n = create_node(data);
-        
-        if (h == NULL) // First node becomes head and tail
-        {
-            h = n;
-            t = n;
-        }
-        else 
-        {
-            t->next = n;
-            t = t->next;
-        }
+        if (order == 'T') std::cin >> intArr;
+        else if (order == 'D') std::cin >> sdArr;
     }
 
-    print_list(h);
-    delete_list(h);
+    std::cout << intArr;
+    std::cout << sdArr;
 
     return 0;
 }
