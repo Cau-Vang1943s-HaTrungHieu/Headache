@@ -1,102 +1,72 @@
 #include <iostream>
 
-struct SoDao
+struct Node
 {
-    int num;
-
-    friend std::istream& operator >> (std::istream& input, SoDao& sd)
-    {
-        input >> sd.num;
-        return input;
-    }
-
-    friend std::ostream& operator << (std::ostream& output, SoDao sd)
-    {
-        output << "[SoDao] " << sd.num;
-        return output;
-    }
-
-    int reversed_num()
-    {
-        int result = 0;
-        int temp = num;
-        while (temp != 0)
-        {
-            result = result * 10 + temp % 10;
-            temp /= 10;
-        }
-        return result;
-    }
-
-    bool operator > (SoDao other)
-    {
-        return reversed_num() > other.reversed_num();
-    }
-
-    int operator + (int n)
-    {
-        return reversed_num() + n;
-    }
+    char data;
+    Node* next;
 };
 
-template<typename T>
-struct Array
+void filter_increasing(Node* head, Node*& tail)
 {
-    T values[99];
-    int size = 0;
-
-    friend std::istream& operator >> (std::istream& input, Array& arr)
+    if (head == NULL) return;
+    Node* current = head->next;
+    Node* prev = head;
+    while (current) // this equivalents to current != NULL
     {
-        input >> arr.values[arr.size++];
-        return input;
-    }
-
-    friend std::ostream& operator << (std::ostream& output, Array arr)
-    {
-        if (arr.size == 0) output << "khong co\nkhong co\n";
+        if (current->data > prev->data)
+        {
+            prev = current; // keep node
+            current = current->next;
+        }
         else
         {
-            output << arr.sum() << std::endl;
-            output << arr.max_num() << std::endl;
+            // remove node
+            Node* temp = current;
+            prev->next = current->next;
+            current = current->next;
+            delete temp;
+            if (prev->next == NULL) tail = prev;
         }
-        return output;
     }
+}
 
-    int sum()
+void print(Node* head)
+{
+    Node* current = head;
+    while (current)
     {
-        int result = 0;
-        for (int i = 0; i < size; i++)
-        {
-            result = values[i] + result;
-        }
-        return result;
+        std::cout << current->data << " ";
+        current = current->next;
     }
-
-    T max_num()
-    {
-        T result = values[0];
-        for (int i = 0; i < size; i++)
-        {
-            if (values[i] > result) result = values[i];
-        }
-        return result;
-    }
-};
+    std::cout << std::endl;
+}
 
 int main()
 {
-    char order;
-    Array<int> intArr;
-    Array<SoDao> sdArr;
+    char val;
+    Node* h = NULL;
+    Node* t = NULL;
+    Node* n;
 
-    while (std::cin >> order)
+    while (std::cin >> val)
     {
-        if (order == 'T') std::cin >> intArr;
-        else if (order == 'D') std::cin >> sdArr;
+        n = new Node;
+        n->data = val;
+        n->next = NULL;
+        if (h == NULL)
+        {
+            h = n;
+            t = n;
+        }
+        else
+        {
+            t->next = n;
+            t = t->next;
+        }
     }
 
-    std::cout << intArr;
-    std::cout << sdArr;
+    filter_increasing(h, t);
+    print(h);
 
     return 0;
 }

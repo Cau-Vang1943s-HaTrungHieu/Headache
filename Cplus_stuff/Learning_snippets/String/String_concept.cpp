@@ -2,6 +2,26 @@
 
 String data type is basically a group of character data types (char) that let
 us modify, change, insert, etc. a sentence, phrase dynamically.
+There are two way to declare string data types:
+C style
+---
+char name[] = "Hieu"; // This gives us "Hieu\0", \0 is null terminating symbol
+
+    - C string isn't limited to its size, meaning it cannot be 
+    changed or modified after declaration.
+
+C++ style
+---
+#include <string>
+...
+std::string name = "Hieu";
+
+    - C++ string is more flexible. Since this data type comes from
+    a string class, it has many useful methods that we can use to
+    work with.
+    - Some features of C++ string or string class:
+        + Appendable with + , +=
+        + Check the length of a string with length();
 
 **/
 
@@ -26,6 +46,10 @@ int main()
     }
     std::cout << myCountry << std::endl;
 
+    myCountry = "Toi yeu " + myCountry;
+    std::cout << myCountry << std::endl;
+    
+    std::cout << myCountry.length() << std::endl;
 
     return 0;
 }

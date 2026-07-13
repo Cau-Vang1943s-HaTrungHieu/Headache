@@ -57,8 +57,8 @@ what you are looking for.
 - And because these classes don't have their default objects like
 i/ostream, you need to declare an object for each of them.
 EX:
-    ifstream read("path");
-    ofstream write("path");
+    ifstream fin("path"); 
+    ofstream fout("path");
 
 
 ifstream enforces std::ios::in
