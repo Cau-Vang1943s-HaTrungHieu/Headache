@@ -1,3 +1,6 @@
+
+
+```cpp
 int reversed_value(std::string& text)
 {
     std::string reversed = text;
@@ -22,3 +25,4 @@ int reversed_value(std::string& text)
 		An iterator in C++ is an object that acts like a pointer which is used to traverse through containers (arrays, vectors, strings, lists, etc.)
     */
 }
+```
