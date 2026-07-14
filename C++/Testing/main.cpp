@@ -1,11 +1,12 @@
 #include <iostream>
-#include <string>
 
 int main()
 {
-    std::string line;
-    getline(std::cin, line);
-    std::cout << line.length() << std::endl;
-    std::cout << line.size() << std::endl;
+    int a = 10;
+    int* ptr = NULL;
+
+    std::cout << ptr << std::endl;
+    std::cout << a << std::endl;
+
     return 0;
 }

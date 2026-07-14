@@ -1,3 +1,9 @@
+/*
+    - If a pointer points to NULL, that means its data (is it data?) is 0
+    - If we dereference a pointer, that means we are using the 
+    pointer to access its data.
+*/
+
 #include <iostream>
 
 int main()
