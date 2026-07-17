@@ -103,3 +103,39 @@ int evaluate_postfix(std::string& expr)
   return stack.top(); // return the last token in the stack, which is essentially the result;
 }
 ```
+
+#### 2.3. Infix to Postfix
+
+To convert an infix expression into a postfix expression:
+
+1. Draw a table containing 3 columns: symbols - stack - Postfix
+2. Each character in the infix expression should be put in the symbols column to evaluate whether they should be put in the stack for later evaluations or go straight into the postfix column. This process should be done one character at a time.
+   1. Operands such as A, B, C, etc. go straight into postfix.
+   2. Opening parenthesis and operators are pushed in the stack
+3. There are some factors that make stack POP operators to the postfix column:
+   1. When a closing bracket ")" is encountered, repeatedly pop operators from the stack into the postfix expression until the matching opening bracket "(" is found. Remove the opening bracket as well, but do not output either parenthesis.
+   2. Before pushing an operator onto the stack, repeatedly pop operators from the stack to the postfix expression while the operator at the top of the stack has **higher precedence, or equal precedence** (for **left-associative operators**). Then push the current operator.
+   3. When the current operator has the same precedence as the operator on the top of the stack, it is pushed onto the stack without popping the previous one.
+4. After all symbols have been processed, pop any remaining operators from the stack into the postfix expression.
+  
+Precedence evaluation:
+
+```cpp
+int precedence(char operat0r)
+{
+    switch (operat0r)
+    {
+        case '+': 
+        case '-': 
+            return 1;
+        case '*': 
+        case '/':
+        case '%':
+            return 2;
+        case '^':
+            return 3;
+        default: 
+            return 0;
+    }
+}
+```

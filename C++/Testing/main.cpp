@@ -1,12 +1,14 @@
 #include <iostream>
+#include <fstream>
 
 int main()
 {
-    int a = 10;
-    int* ptr = NULL;
-
-    std::cout << ptr << std::endl;
-    std::cout << a << std::endl;
+    int n;
+    std::string str;
+    std::cin >> n;
+    std::cout << n;
+    std::getline(std::cin, str);
+    std::cout << str << std::endl;
 
     return 0;
 }
