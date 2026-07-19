@@ -1,5 +1,30 @@
 # Other functions
 
+You could call a function like this
+
+```cpp
+#include <iostream>
+
+int sum_to(int n)
+{
+    if (n <= 0) return 0;
+    if (n == 1) return 1;
+
+    return sum_to(n - 1) + n;
+}
+
+int main()
+{
+    int n; std::cin >> n;
+    std::cout << sum_to(n) << std::endl;
+
+    
+    return 0;
+}
+```
+
+But the function will decay into a pointer to function eventually. **There is still much more to learn about this problem**.
+
 ## Basic swap
 
 ```cpp

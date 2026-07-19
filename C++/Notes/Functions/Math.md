@@ -15,7 +15,7 @@ for (int i = 0; i < n; i++)
 }
 ```
 
-## Secondary diagonal of square matrix
+### Secondary diagonal of square matrix
 
 For an square matrix, the secondary diagonal elements are matrix[i][n - 1 - i].
 

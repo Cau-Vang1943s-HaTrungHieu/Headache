@@ -2,6 +2,9 @@
 1783498624 source:d:\hcmue\courses\n2_hks\ltcb\cplus_stuff\codeblock_testing\main.cpp
 	<iostream>
 
-1784283140 source:d:\hcmue\courses\n2_hks\ltcb\c++\codeblock_testing\main.cpp
+1784384132 source:d:\hcmue\courses\n2_hks\ltcb\c++\codeblock_testing\main.cpp
 	<iostream>
+	<fstream>
+	<limits>
+	<cstdlib>
 
