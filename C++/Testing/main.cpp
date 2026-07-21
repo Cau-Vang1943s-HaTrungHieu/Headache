@@ -1,20 +1,16 @@
 #include <iostream>
 
-void count_down(int count)
+void print_binary(int n)
 {
-    std::cout << "push " << count << '\n';
-
-    if (count > 1) // termination condition
-        count_down(count - 1);
-
-    std::cout << "pop " << count << '\n';
+    if (n == 0) return;
+    print_binary(n / 2);
+    std::cout << n % 2;
 }
 
 int main()
 {
     int n; std::cin >> n;
+    print_binary(n);
 
-    count_down(n);
-    
     return 0;
 }
