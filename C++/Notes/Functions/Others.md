@@ -74,5 +74,23 @@ void validate(int& num, int min, int max) {
         break; // success
     }
 }
+```
 
+## Palindrome
+
+The reversed number must multiply by 10 in order to move each digit one decimal place to the left and leave the ones place for the extraction from the original number.
+
+```cpp
+bool is_palindrome(int num)
+{
+    int original = num;
+    int reversed = 0;
+
+    while (num > 0)
+    {
+        reversed = reversed * 10 + num % 10;
+        num /= 10;
+    }
+    return original == reversed;
+}
 ```

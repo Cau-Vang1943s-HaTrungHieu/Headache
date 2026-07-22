@@ -107,6 +107,8 @@ int sum_digits(int n)
 
 ### 3. Binary converter
 
+![Binary_converter](Binary_conversion.svg "Binary_converter")
+
 Ordinarily, we do
 
 ```cpp
@@ -130,7 +132,8 @@ void print_binary(unsigned int n)
 
 ### 4. Binary printer
 
-Check out this diagram: ![Binary_printer](Binary_printer.drawio)
+Check out this diagram: ![Binary_printer](Binary_printer.svg "Binary_printer")
+
 
 ```cpp
 void generate(std::string current, int n)
@@ -143,5 +146,33 @@ void generate(std::string current, int n)
 
     generate(current + "0", n);
     generate(current + "1", n);
+}
+```
+
+### 5. Binary - Octal - Hexadecimal converter
+
+```cpp
+#include <iostream>
+
+void print_conversion(long soHe10, int heCoSoMoi = 0)
+{
+    int base;
+    const char digits[] = "0123456789ABCDEF";
+
+    switch (heCoSoMoi)
+    {
+        case 0: base = 2; break;
+        case 1: base = 8; break;
+        case 2: base = 16; break;
+    }
+
+    if (soHe10 < base)
+    {
+        std::cout << soHe10;
+        return;
+    }
+
+    print_conversion(soHe10 / base, heCoSoMoi);
+    std::cout << digits[soHe10 % base];
 }
 ```
