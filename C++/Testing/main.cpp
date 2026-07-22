@@ -1,16 +1,23 @@
 #include <iostream>
+#include <string>
 
-void print_binary(int n)
+void generate(std::string current, int n)
 {
-    if (n == 0) return;
-    print_binary(n / 2);
-    std::cout << n % 2;
+    if (current.length() == n)
+    {
+        std::cout << current << '\n';
+        return;
+    }
+
+    generate(current + "0", n);
+    generate(current + "1", n);
 }
 
 int main()
 {
     int n; std::cin >> n;
-    print_binary(n);
+
+    generate("", n);
 
     return 0;
 }

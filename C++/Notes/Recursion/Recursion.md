@@ -18,6 +18,18 @@ void count_down(int count)
 }
 ```
 
+Once compiled, the call stack would look like this:
+
+```cpp
+// INput 5 for example
+count_down(1)
+count_down(2)
+count_down(3)
+count_down(4)
+count_down(5)
+main()
+```
+
 ## Sum of natural numbers
 
 ```cpp
@@ -113,5 +125,23 @@ void print_binary(unsigned int n)
 {
     if (n > 1) print_binary(n / 2);
     std::cout << n % 2;
+}
+```
+
+### 4. Binary printer
+
+Check out this diagram: ![Binary_printer](Binary_printer.drawio)
+
+```cpp
+void generate(std::string current, int n)
+{
+    if (current.length() == n)
+    {
+        std::cout << current << '\n';
+        return;
+    }
+
+    generate(current + "0", n);
+    generate(current + "1", n);
 }
 ```
