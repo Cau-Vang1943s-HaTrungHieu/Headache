@@ -1,5 +1,7 @@
 # Other functions
 
+## Calling a function without paramenters-input parentheses
+
 You could call a function like this
 
 ```cpp
@@ -16,8 +18,7 @@ int sum_to(int n)
 int main()
 {
     int n; std::cin >> n;
-    std::cout << sum_to(n) << std::endl;
-
+    std::cout << sum_to /* Notice there aren't parentheses here */ << std::endl;
     
     return 0;
 }
@@ -55,28 +56,113 @@ void swap(int& a, int& b)
 This function makes sure that the input number is an integer.
 
 ```cpp
-void validate(int& num, int min, int max) {
-    while (true) {
-        std::cin >> num;
-
-        if (std::cin.fail()) {
-            std::cout << "Invalid input! Please enter a number.\n";
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            continue;
-        }
-
-        if (num < min || num > max) {
-            std::cout << "Number must be between " << min << " and " << max << ".\n";
-            continue;
-        }
-
-        break; // success
+#include <limits>
+void validate(int& num) // Validation process
+{
+    while (!(std::cin >> num) or num <= 0)
+    {
+        std::cout << "Vui long nhap so nguyen duong!" << std::endl;
+        std::cin.clear(); // clear error flag
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // discard bad input
     }
 }
 ```
 
-## Palindrome
+These two return values:
+
+```cpp
+#include <limits>
+double valid_double(double min = 0.0, double max = numeric_limits<double>::max()) {
+    double val;
+    while (true) {
+        cin >> val;
+        if (cin.fail() || val < min || val > max) {
+            cout << "Invalid input! Please enter a positive floating-point value (including zero).\n";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            continue;
+        }
+        return val;
+    }
+}
+
+int valid_int(int min = 1, int max = numeric_limits<int>::max()) {
+    int val;
+    while (true) {
+        cin >> val;
+        if (cin.fail() || val < min || val > max) {
+            cout << "Invalid input! Please enter a positive integer.\n";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            continue;
+        }
+        return val;
+    }
+}
+```
+
+And in the main function, you just need to call them as their return type, like so:
+
+```cpp
+rows = valid_int();
+cols = valid_int();
+matrix[r][c] = valid_double();
+// or use the void function to validate them, either choices work
+validate(rows);
+validate(cols);
+// Notice: void validation function doesn't support any other datatypes beside int.
+```
+
+## Working with digits
+
+### Digits Extraction
+
+From 123 to 1, 2, 3 individually
+
+```cpp
+int main()
+{
+    int extracted_digits[100];
+    int size = 0;
+    int number = 123;
+
+    while (number > 0)
+    {
+        int digit = number % 10;
+        extracted_digits[size++] = digit;
+        number /= 10;
+    }
+
+    for (int i = size - 1; i >= 0; i--)
+    {
+        std::cout << extracted_digits[i] << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
+```
+
+### Digits Construction
+
+Construct a new number (we can use string for this operation) from an sequence of digits.
+
+> 123456789 --odd_position--> 2468.  
+> 34325 --palindrome--> 52343.  
+This can be done by creating a zero-value variable, multiply it by 10 to shift all existing digits one place to the left making room for the next digit then add the desired digit into that variable and repeat the process. The following example will give us 12345679.  
+Some problems you might encounter:
+
+1. SOCHANLE
+
+```cpp
+int constructed_num = 0;
+for (int digit = 0; digit < 10; digit++)
+{
+    constructed_num = constructed_num * 10 + digit;
+}
+```
+
+### Palindrome
 
 The reversed number must multiply by 10 in order to move each digit one decimal place to the left and leave the ones place for the extraction from the original number.
 

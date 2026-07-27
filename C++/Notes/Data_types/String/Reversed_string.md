@@ -1,4 +1,4 @@
-
+# String data type
 
 ```cpp
 int reversed_value(std::string& text)

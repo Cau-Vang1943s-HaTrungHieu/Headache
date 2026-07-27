@@ -28,7 +28,6 @@ for (int i = 0; i < rows; i++)
 }
 ```
 
-
 ## Find perfect square number
 
 ```cpp
@@ -76,3 +75,43 @@ bool is_Prime(int n)
     return true;
 }
 ```
+
+## Geometry
+
+### Distance between two points
+
+The distance formula is:
+$$
+d = \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2}
+$$
+
+Check out this the Point structure in OOP note.
+
+### Perimeter
+
+### Circle
+
+#### Radius, Diameter and Circumference
+
+- Radius is the distance between the central point and the edge.
+- Diameter is a straight line across the circle.
+- Circumference is the distance all around the circle.
+
+Divide the **circumference** by the **diameter** we get **Pi**
+$$
+Circumference = \pi * diameter
+$$
+
+Hence:
+$$
+Circumference = \pi * 2 * radius
+$$
+
+#### Relative position
+
+1. Separate: `d > r1 + r2`
+2. Externallly tangent (Touch at one point): `d == r1 + r2`
+3. Intersect at two points: `abs(r1 - r2) < d and d < r1 + r2`
+4. Internally tangent (One circle is insie the other and they touch once): `d == abs(r1 - r2)`
+5. One circle completely inside another: `d < abs(r1 - r2)`
+6. Coincident (same circle): `d == 0 and r1 == r2`

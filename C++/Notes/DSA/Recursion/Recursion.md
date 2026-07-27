@@ -1,6 +1,6 @@
 # Recursion
 
-Recursion in C++ is a technique in which a function calls itself directly or indirectly in order to solve a particular problem (often the hard ones). Each recursive call creates a new stack frame and pushes it into the **call stack**, and the fact that it keeps calling itself indefinitely would cause the stack to exhausted; hence, there exists the term **stack overflow**. Therefore, a **base case** (or termination case or trivial output) comes in to prevent the problem. When the base case is reached, the function returns, its stack frame is automatically removed from the call stack in FIFO order, until execution returns to the original caller.
+Recursion in C++ is a technique in which a function calls itself directly or indirectly in order to solve a particular problem (often the hard ones). Each recursive call creates a new stack frame and pushes it into the **call stack**, and the fact that it keeps calling itself indefinitely would cause the stack to exhausted; hence, there exists the term **stack overflow**. Therefore, a **base case** (or termination case or trivial output) comes in to prevent the problem, there could be many termination cases in some problems. When the base case is reached, the function returns, its stack frame is automatically removed from the call stack in **LIFO** order, until execution returns to the original caller.
 
 ## How recursion works on Call Stack
 
@@ -18,16 +18,16 @@ void count_down(int count)
 }
 ```
 
-Once compiled, the call stack would look like this:
+Once compiled, the **call stack** would look like this:
 
 ```cpp
 // INput 5 for example
-count_down(1)
-count_down(2)
-count_down(3)
-count_down(4)
-count_down(5)
-main()
+count_down(1);
+count_down(2);
+count_down(3);
+count_down(4);
+count_down(5);
+main();
 ```
 
 ## Sum of natural numbers
@@ -134,18 +134,16 @@ void print_binary(unsigned int n)
 
 Check out this diagram: ![Binary_printer](Binary_printer.svg "Binary_printer")
 
-
 ```cpp
-void generate(std::string current, int n)
+void generate_bin(std::string current, int n)
 {
     if (current.length() == n)
     {
         std::cout << current << '\n';
         return;
     }
-
-    generate(current + "0", n);
-    generate(current + "1", n);
+    generate_bin(current + "0", n);
+    generate_bin(current + "1", n);
 }
 ```
 
