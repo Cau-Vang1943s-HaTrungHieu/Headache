@@ -1,30 +1,74 @@
+/*
+    BAI 16: Viet ham tinh tong cac so nguyen to co trong ma tran.
+*/
+
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 #include <cmath>
 using namespace std;
-bool laSoNguyen(int n) {
-    if (n < 2) return false;
-    for (int i = 2; i <= sqrt(n); i++) {
-        if (n % i == 0) return false;
+
+const int MAX = 20;
+
+void nhapNgauNhien(int a[][MAX], int n, int m, int minVal = 0, int maxVal = 50)
+{
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < m; j++)
+            a[i][j] = minVal + rand() % (maxVal - minVal + 1);
+}
+
+void xuatMaTran(int a[][MAX], int n, int m)
+{
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+            cout << a[i][j] << "\t";
+        cout << endl;
     }
+}
+
+// Kiem tra so nguyen to
+bool laSoNguyenTo(int x)
+{
+    if (x < 2)
+        return false;
+    for (int i = 2; i <= (int)sqrt((double)x); i++)
+        if (x % i == 0)
+            return false;
     return true;
 }
 
-int main() {
-    int n;
-    cout << "Nhập số nguyên n: ";
-    cin >> n;
+// Ham chinh cua bai toan: tinh tong cac so nguyen to trong ma tran
+int tongSoNguyenTo(int a[][MAX], int n, int m)
+{
+    int tong = 0;
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < m; j++)
+            if (laSoNguyenTo(a[i][j]))
+                tong += a[i][j];
+    return tong;
+}
 
-    if (n <= 2) {
-        cout << "Không có số nguyên tố nào nhỏ hơn " << n << endl;
-    } else {
-        cout << "Các số nguyên tố nhỏ hơn " << n << " là: ";
-        for (int i = 2; i < n; i++) {
-            if (laSoNguyen(i)) {
-                cout << i << " ";
-            }
-        }
-        cout << endl;
-    }
+int main()
+{
+    srand((unsigned int)time(0));
+
+    int a[MAX][MAX];
+    int n, m;
+
+    cout << "=== BAI 16: TONG CAC SO NGUYEN TO TRONG MA TRAN ===\n";
+    cout << "Nhap so hang (n): ";
+    cin >> n;
+    cout << "Nhap so cot (m): ";
+    cin >> m;
+
+    nhapNgauNhien(a, n, m);
+
+    cout << "\nMa tran vua tao:\n";
+    xuatMaTran(a, n, m);
+
+    int tong = tongSoNguyenTo(a, n, m);
+    cout << "\nTong cac so nguyen to trong ma tran la: " << tong << endl;
 
     return 0;
 }

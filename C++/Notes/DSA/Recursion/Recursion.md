@@ -174,3 +174,43 @@ void print_conversion(long soHe10, int heCoSoMoi = 0)
     std::cout << digits[soHe10 % base];
 }
 ```
+
+### 6. LASTNUM
+
+Consult it here: [LASTNUM](../../../UPCODE/LapTrinhNangCao/LASTNUM.cpp)
+
+```cpp
+int another_sum(int n)
+{
+    if (n < 10) return n;
+
+    int sum = 0;
+    while (n > 0)
+    {
+        int digit = n % 10;
+        sum += digit;
+        n /= 10;
+    }
+    return another_sum(sum);
+}
+```
+
+### 7. Cosine and Sine equations
+
+Consult it here: [[LTNC]Final01](../../../UPCODE/LapTrinhNangCao/[LTNC]Final01.cpp)
+
+```cpp
+double sine(double x, double n = 10)
+{
+    if (n == 0) return x;
+    return sine(x, n - 1) + std::pow(-1, n) * (pow(x, 2*n+1) / factorial(2*n+1));
+}
+
+double cosine(double x, double n = 10)
+{
+    if (n == 0) return 1;
+    return cosine(x, n - 1) +std::pow(-1, n) * (pow(x, 2*n) / factorial(2*n));
+}
+```
+
+### 8. 

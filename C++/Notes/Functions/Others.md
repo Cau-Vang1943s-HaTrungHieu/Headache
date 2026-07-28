@@ -1,5 +1,8 @@
 # Other functions
 
+fabs() &rarr; floating-point absolute value.  
+abs() &rarr; absolute value. (works for both int and float)
+
 ## Calling a function without paramenters-input parentheses
 
 You could call a function like this
@@ -111,6 +114,13 @@ matrix[r][c] = valid_double();
 validate(rows);
 validate(cols);
 // Notice: void validation function doesn't support any other datatypes beside int.
+```
+
+## Passing an array to a function
+
+```cpp
+void myFunction(int arr[], int n);
+void myFunction(int* arr, int n);
 ```
 
 ## Working with digits
