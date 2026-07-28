@@ -190,3 +190,159 @@ bool is_palindrome(int num)
     return original == reversed;
 }
 ```
+
+## Date: Day, Month, Year
+
+### 1. Leap Year
+
+```cpp
+bool isLeapYear(int year)
+{
+    return 
+    year % 400 == 0 or
+    (year % 4 == 0 and year % 100 != 0);
+}
+```
+
+### 2. Days-in-a-month Array
+
+Sometimes, days in a month have unique pattern.  
+Instead of having many if statements, we could use something cleaner like an array storing the numbers of days in a month.
+
+```cpp
+int days[] =
+{
+    0, 
+    31, 0, 31, 30,
+    31, 30, 31, 31,
+    30, 31, 30, 31
+};
+```
+
+Notice the first element of the array "0" (0-based array) isn't used since the first index, which is 0, of an array is occupied, we don't need to worry about subtracting from or adding value to month in order to access the days of that specific month any more.
+
+```cpp
+days[month];
+```
+
+The 2nd day of the month is 0 because it is the only month the can be changed if the current year is leap year. Thus we have this condition (put it wherever you find good for your cause).
+
+```cpp
+daysInMonth[2] = (is_leapYear(year) ? 29 : 28);
+```
+
+### 3. Validate date
+
+```cpp
+bool is_validDate()
+{
+    if (year < 1) return false;
+    if (month < 1 or month > 12) return false;
+
+    int lastDay = daysInMonth[month];
+    if (month == 2 and is_leapYear()) lastDay = 29;
+    if (day < 1 or day > lastDay) return false;
+        
+    return true;
+}
+```
+
+### 4. Which day of the year?
+
+There is a simple formula for this is:
+$$
+day of the year = (total number of days of all previous months) + current day of this month
+$$
+
+```cpp
+int dayOfYear() const
+{
+    int total = day;
+
+    for (int m = 1; m < month; m++)
+    {
+        total += daysInMonth[m];
+    }
+    return total;
+}
+```
+
+### 5. which day of the week?
+
+There are two methods, but we'll discuss the second one.
+
+1. Count from a reference date (e.g. 01/01/1900 - Monday) and divide it by 7 to get the operation's remainder, which is our day of the week
+2. Zeller's Congruence
+
+In Zeller's Congruence:
+
+- q = day of the month
+- m = month
+  - March = 3
+  - April = 4
+  - ...
+  - Dec = 12
+  - Jan = 13
+  - Feb = 14
+- K = year within the century (year % 100)
+- J = zero-based century (year / 100);
+- The result h is
+  - 0 - Sat
+  - 1 - Sun
+  - 2 - Mon
+  - 3 - Tue
+  - 4 - Wed
+  - 5 - Thu
+  - 6 - Fri
+
+Example:  
+15/01/2025 becomes
+
+- q = 15
+- m = 13
+- year = 2024
+- K = 24
+- J =20
+
+Let's see it in code
+
+```cpp
+std::string dayOfWeek() const
+{
+    int q = day;
+    int m = month;
+    int y = year;
+    /*
+        Jan and Feb are treated as months 13 and 14 of
+        the previous year.
+    */
+    if (m == 1 or m == 2)
+    {
+        m += 12;
+        y--;
+    }
+       
+    int K = y % 100;
+    int J = y / 100;
+
+    int h = (q
+            + (13 * (m + 1)) / 5
+            + K
+            + K / 4
+            + J / 4
+            + 5 * J) % 7;
+
+    static const std::string weekday[] =
+    {
+        "Saturday",
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+    };
+
+    return weekday[h];
+}
+```

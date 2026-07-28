@@ -1,74 +1,86 @@
-/*
-    BAI 16: Viet ham tinh tong cac so nguyen to co trong ma tran.
-*/
-
 #include <iostream>
-#include <cstdlib>
-#include <ctime>
-#include <cmath>
-using namespace std;
 
-const int MAX = 20;
-
-void nhapNgauNhien(int a[][MAX], int n, int m, int minVal = 0, int maxVal = 50)
+struct Complex
 {
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < m; j++)
-            a[i][j] = minVal + rand() % (maxVal - minVal + 1);
-}
+    int real;
+    int img;
 
-void xuatMaTran(int a[][MAX], int n, int m)
-{
-    for (int i = 0; i < n; i++)
+    friend std::istream& operator>>(std::istream& input, Complex& cmplx)
     {
-        for (int j = 0; j < m; j++)
-            cout << a[i][j] << "\t";
-        cout << endl;
+        input >> cmplx.real >> cmplx.img;
+        return input;
     }
-}
 
-// Kiem tra so nguyen to
-bool laSoNguyenTo(int x)
-{
-    if (x < 2)
-        return false;
-    for (int i = 2; i <= (int)sqrt((double)x); i++)
-        if (x % i == 0)
-            return false;
-    return true;
-}
+    friend std::ostream& operator<<(std::ostream& output, Complex cmplx)
+    {
+        if (cmplx.real != 0) output << cmplx.real;
 
-// Ham chinh cua bai toan: tinh tong cac so nguyen to trong ma tran
-int tongSoNguyenTo(int a[][MAX], int n, int m)
-{
-    int tong = 0;
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < m; j++)
-            if (laSoNguyenTo(a[i][j]))
-                tong += a[i][j];
-    return tong;
-}
+        if (cmplx.img != 0)
+        {
+            if (cmplx.img > 0 and cmplx.real != 0) output << "+";
+            if (cmplx.img < 0) output << "-";
+            output << std::abs(cmplx.img) << "*i";
+        }
+
+        return output;
+    }
+
+    Complex operator+(const Complex& other) const
+    {
+        Complex result;
+        result.real = real + other.real;
+        result.img = img + other.img;
+        return result;
+    }
+
+    Complex operator-(const Complex& other) const
+    {
+        Complex result;
+        result.real = real - other.real;
+        result.img = img - other.img;
+        return result;
+    }
+
+    Complex operator*(const Complex& other) const
+    {
+        Complex result;
+        result.real = real * other.real - img * other.img;
+        result.img = real * other.img + img * other.real;
+        return result;
+    }
+
+    bool operator<(const Complex& other) const
+    {
+        if (real != other.real) return real < other.real;
+        return img < other.img;
+    }
+};
 
 int main()
 {
-    srand((unsigned int)time(0));
+    int n; std::cin >> n;
+    Complex cmplx_arr[100];
 
-    int a[MAX][MAX];
-    int n, m;
+    for (int i = 0; i < n; i++)
+    {
+        std::cin >> cmplx_arr[i];
+    }
 
-    cout << "=== BAI 16: TONG CAC SO NGUYEN TO TRONG MA TRAN ===\n";
-    cout << "Nhap so hang (n): ";
-    cin >> n;
-    cout << "Nhap so cot (m): ";
-    cin >> m;
+    Complex max_cmplx = cmplx_arr[0], min_cmplx = cmplx_arr[0];
+    Complex sum = cmplx_arr[0], product = cmplx_arr[0];
 
-    nhapNgauNhien(a, n, m);
+    for (int i = 1; i < n; i++)
+    {
+        if (max_cmplx < cmplx_arr[i]) max_cmplx = cmplx_arr[i];
+        if (cmplx_arr[i] < min_cmplx) min_cmplx = cmplx_arr[i];
+        sum = sum + cmplx_arr[i];
+        product = product * cmplx_arr[i];
+    }
 
-    cout << "\nMa tran vua tao:\n";
-    xuatMaTran(a, n, m);
-
-    int tong = tongSoNguyenTo(a, n, m);
-    cout << "\nTong cac so nguyen to trong ma tran la: " << tong << endl;
+    std::cout << max_cmplx << std::endl;
+    std::cout << sum << std::endl;
+    std::cout << product << std::endl;
+    std::cout << max_cmplx - min_cmplx << std::endl;
 
     return 0;
 }

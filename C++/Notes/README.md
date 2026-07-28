@@ -24,3 +24,6 @@ int a{1};
 // Value initialization - braces without value (actually with default value)
 int a{}; // --> a == 0
 ```
+
+runtime --> the running state of a program
+compile time --> the time when we hit that "compile" button

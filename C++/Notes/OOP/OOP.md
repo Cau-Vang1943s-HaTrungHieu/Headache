@@ -85,3 +85,8 @@ double operator-(const Point& other) const
     );
 }
 ```
+
+#### 3. Date Array
+
+```cpp
+```
