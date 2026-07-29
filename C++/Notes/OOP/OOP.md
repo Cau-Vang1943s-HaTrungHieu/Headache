@@ -4,13 +4,31 @@
 
 ## Operator Overloading
 
-## Why const?
+## Why const? (About object life time)
 
-- Declaring an object as constant avoid copying the object itself and modifying the parameter should it is passed by reference.
+- Passing the object as reference avoid copying the object itself and modifying the parameter should it is passed by reference.
 - Declaring a function as const indicating that the current object (this) is not modified either.
 
+For example, consider we have a Fraction structure/class that has this overloaded output operator.
+
 ```cpp
-double operator-(const Point& other) const
+std::ostream& operator<<(std::istream& output, Fraction frac); // You declare it like so
+```
+
+Whenever an output operation such as cout << obj; is performed, the existing object (or a temporary object if the expression creates one) is passed to the overloaded operator<<. If the parameter is passed by value, the function creates a copy of that object. The function operates on this copy, and when the function returns, the copy is destroyed. The original object remains unchanged. If the original argument was a temporary object (for example, Fraction(3, 4)), that temporary is automatically destroyed at the end of the full expression after the function call completes.
+
+In order to avoid the copying process we pass the object by reference
+
+```cpp
+std::ostream& operator<<(std::ostream& output, Fraction& frac);
+```
+
+The reference parameter will be binded to the object and until the operator<< ends, no copy has been made and there is only the temporary object left to destroy when the main function completes its session.  
+
+Some people also pass the object with const modifier so as to keep them intact.
+
+```cpp
+std::ostream& operator<<(std::ostream& output, const Fraction& frac);
 ```
 
 ### Common Problems

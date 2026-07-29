@@ -1,86 +1,141 @@
 #include <iostream>
 
-struct Complex
+int gcd(int a, int b)
 {
-    int real;
-    int img;
-
-    friend std::istream& operator>>(std::istream& input, Complex& cmplx)
+    while (b != 0)
     {
-        input >> cmplx.real >> cmplx.img;
+        int temp = a % b;
+        a = b;
+        b = temp;
+    }
+    return a;
+}
+
+struct Fraction
+{
+    int numerator;
+    int denumerator;
+
+    void simplification()
+    {
+        int GCD = gcd(numerator, denumerator);
+        numerator /= GCD;
+        denumerator /= GCD;
+
+        if (denumerator < 0)
+        {
+            numerator = -numerator;
+            denumerator = -denumerator;
+        }
+    }
+
+    friend std::istream& operator >> (std::istream& input, Fraction& frac)
+    {
+        input >> frac.numerator >> frac.denumerator;
         return input;
     }
 
-    friend std::ostream& operator<<(std::ostream& output, Complex cmplx)
+    friend std::ostream& operator << (std::ostream& output, const Fraction& frac)
     {
-        if (cmplx.real != 0) output << cmplx.real;
-
-        if (cmplx.img != 0)
-        {
-            if (cmplx.img > 0 and cmplx.real != 0) output << "+";
-            if (cmplx.img < 0) output << "-";
-            output << std::abs(cmplx.img) << "*i";
-        }
-
+        output << frac.numerator << "/" << frac.denumerator;
         return output;
     }
 
-    Complex operator+(const Complex& other) const
+    bool operator != (const Fraction& other)
     {
-        Complex result;
-        result.real = real + other.real;
-        result.img = img + other.img;
-        return result;
+        Fraction this_frac = *this, other_frac = other;
+        this_frac.simplification();
+        other_frac.simplification();
+        return (this_frac.numerator != other_frac.numerator or this_frac.denumerator != other_frac.denumerator);
     }
 
-    Complex operator-(const Complex& other) const
+    Fraction operator + (const Fraction& other)
     {
-        Complex result;
-        result.real = real - other.real;
-        result.img = img - other.img;
+        Fraction result;
+        result.numerator = numerator * other.denumerator + other.numerator * denumerator;
+        result.denumerator = denumerator * other.denumerator;
+        result.simplification();
         return result;
     }
+};
 
-    Complex operator*(const Complex& other) const
+struct MixedNumber
+{
+    Fraction fraction;
+    int whole;
+
+    friend std::istream& operator >> (std::istream& input, MixedNumber& figure)
     {
-        Complex result;
-        result.real = real * other.real - img * other.img;
-        result.img = real * other.img + img * other.real;
-        return result;
+        input >> figure.whole >> figure.fraction.numerator >> figure.fraction.denumerator;
+        return input;
     }
 
-    bool operator<(const Complex& other) const
+    friend std::ostream& operator << (std::ostream& output, const MixedNumber& figure)
     {
-        if (real != other.real) return real < other.real;
-        return img < other.img;
+        if (figure.whole != 0) {
+            output << figure.whole << " " << figure.fraction.numerator << "/" << figure.fraction.denumerator;
+        }
+        else
+        {
+            output << figure.fraction.numerator << "/" << figure.fraction.denumerator;
+        }
+        return output;
+    }
+
+    void toImproperFraction(bool doConvert = true)
+    {
+        fraction.simplification();
+        if (doConvert)
+        {
+            whole += fraction.numerator / fraction.denumerator;
+            fraction.numerator = fraction.numerator % fraction.denumerator;
+        }
+        else
+        {
+            fraction.numerator = whole * fraction.denumerator + fraction.numerator;
+            whole = 0;
+            fraction.simplification();
+        }
+    }
+
+    bool operator != (const MixedNumber& other)
+    {
+        return (whole != other.whole or fraction != other.fraction);
+    }
+
+    int sum_of_all() const
+    {
+        return whole + fraction.numerator + fraction.denumerator;
+    }
+
+    bool operator > (const MixedNumber& other)
+    {
+        return sum_of_all() > other.sum_of_all();
     }
 };
 
 int main()
 {
-    int n; std::cin >> n;
-    Complex cmplx_arr[100];
+    MixedNumber figure1, figure2;
+    std::string conversion;
+    std::cin >> figure1 >> figure2 >> conversion;
 
-    for (int i = 0; i < n; i++)
+    std::cout << (figure1 != figure2 ? "TRUE" : "FALSE") << std::endl;
+    std::cout << (figure1 > figure2 ? "TRUE" : "FALSE") << std::endl;
+
+    if (conversion == "true")
     {
-        std::cin >> cmplx_arr[i];
+        figure1.toImproperFraction(true);
+        figure2.toImproperFraction(true);
+    }
+    else
+    {
+        figure1.toImproperFraction(false);
+        figure2.toImproperFraction(false);
     }
 
-    Complex max_cmplx = cmplx_arr[0], min_cmplx = cmplx_arr[0];
-    Complex sum = cmplx_arr[0], product = cmplx_arr[0];
-
-    for (int i = 1; i < n; i++)
-    {
-        if (max_cmplx < cmplx_arr[i]) max_cmplx = cmplx_arr[i];
-        if (cmplx_arr[i] < min_cmplx) min_cmplx = cmplx_arr[i];
-        sum = sum + cmplx_arr[i];
-        product = product * cmplx_arr[i];
-    }
-
-    std::cout << max_cmplx << std::endl;
-    std::cout << sum << std::endl;
-    std::cout << product << std::endl;
-    std::cout << max_cmplx - min_cmplx << std::endl;
+    std::cout << figure1 << std::endl;
+    std::cout << figure2 << std::endl;
 
     return 0;
 }

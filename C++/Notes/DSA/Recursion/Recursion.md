@@ -82,6 +82,12 @@ int fibonacci(std::size_t count)
 }
 ```
 
+## Types of recursion
+
+1. Linear
+2. Backtracking
+3. Binary Tree
+
 ## Some practical problems
 
 ### 1. Factorial

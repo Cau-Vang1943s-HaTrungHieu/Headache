@@ -1,159 +1,94 @@
 #include <iostream>
+#include <algorithm>
 
-struct Date
+class Fraction
 {
-    int day, month, year;
-    int daysInMonth[13] = 
+private:
+    int numerator;
+    int denominator;
+public:
+    Fraction(int numerator = 0, int denominator = 1)
     {
-        0,
-        31, 0, 31, 30,
-        31, 30, 31, 31,
-        30, 31, 30, 31
-    };
-
-    friend std::istream& operator>>(std::istream& input, Date& date)
-    {
-        input >> date.day >> date.month >> date.year;
-        date.daysInMonth[2] = (date.is_leapYear() ? 29 : 28);
-        return input;
+        this->numerator = numerator;
+        this->denominator = denominator;
     }
 
-    friend std::ostream& operator<<(std::ostream& output, Date date)
+    int get_numerator()
     {
-        output 
-        << date.day << "/" 
-        << date.month << "/"
-        << date.year;
+        return numerator;
+    }
+
+    void set_numerator(int n)
+    {
+        numerator = n;
+    }
+
+    int get_denominator()
+    {
+        return denominator;
+    }
+
+    void set_denominator(int n)
+    {
+        if (n != 0) denominator = n;
+    }
+
+    void normalise()
+    {
+        int gcd = std::__gcd(numerator, denominator);
+        numerator /= gcd;
+        denominator /= gcd;
+        
+        if (denominator < 0)
+        {
+            numerator = -numerator;
+            denominator = -denominator;
+        }
+    }
+
+    friend std::istream& operator>>(std::istream& input, Fraction& frac)
+    {
+        input >> frac.numerator >> frac.denominator;
+        return input;
+    }
+    
+    friend std::ostream& operator<<(std::ostream& output, Fraction frac)
+    {
+        output << frac.numerator << "/" << frac.denominator;
         return output;
     }
 
-    bool is_validDate()
+    Fraction reciprocal()
     {
-        if (year < 1) return false;
-        if (month < 1 or month > 12) return false;
-
-        int lastDay = daysInMonth[month];
-        if (month == 2 and is_leapYear()) lastDay = 29;
-        if (day < 1 or day > lastDay) return false;
-        
-        return true;
+        return Fraction(denominator, numerator);
     }
 
-    bool is_leapYear() const
+    Fraction operator+(Fraction& other)
     {
-        return year % 400 == 0 or year % 4 == 0 and year % 100 != 0;
-    }
-
-    int dayOfYear() const
-    {
-        int total = day;
-
-        for (int m = 1; m < month; m++)
-        {
-            total += daysInMonth[m];
-        }
-        return total;
-    }
-
-    std::string dayOfWeek() const
-    {
-        int q = day;
-        int m = month;
-        int y = year;
-        /*
-            Jan and Feb are treated as months 13 and 14 of
-            the previous year.
-        */
-       if (m == 1 or m == 2)
-       {
-            m += 12;
-            y--;
-       }
-       
-       int K = y % 100;
-       int J = y / 100;
-
-       int h = (q
-                + (13 * (m + 1)) / 5
-                + K
-                + K / 4
-                + J / 4
-                + 5 * J) % 7;
-
-        static const std::string weekday[] =
-        {
-            "Saturday",
-            "Sunday",
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday"
-        };
-
-        return weekday[h];
-    }
-
-    Date next_date() const
-    {
-        Date result;
-        result.day = day + 1;
-        result.month = month;
-        result.year = year;
-
-        if (result.day > daysInMonth[result.month])
-        {
-            result.day = 1;
-            result.month += 1;
-        }
-        if (result.month > 12)
-        {
-            result.month = 1;
-            result.year += 1;
-        }
+        Fraction result;
+        result.numerator = numerator * other.denominator + other.numerator * denominator;
+        result.denominator = denominator * other.denominator;
         return result;
     }
 
-    bool operator==(const Date& other) const
-    {
-        return
-        day == other.day and
-        month == other.month and
-        year == other.year;
-    }
-
-    bool is_the_same_DOW(const Date& other) const
-    {
-        return dayOfWeek() == other.dayOfWeek();
-    }
-
-    bool operator<(const Date& other) const
-    {
-        if (year < other.year) return true;
-        else if (year == other.year)
-        {
-            if (month < other.month) return true;
-            else if (month == other.month)
-                if (day < other.day) return true;
-        }
-        return false;
-    }
-
-
-    // You stop at this
-    int operator-(const Date& other) const
-    {
-        Date max, min;
-        if (*this < other)
-        {
-            max = other;
-            min = *this;
-        }
-    }
+    ~Fraction() {}
 };
 
 int main()
 {
+    Fraction frac;
+    std::cin >> frac;
+    Fraction reciprocal_frac = frac.reciprocal();
+
+
+    std::cout << frac << std::endl;
+    std::cout << frac.get_numerator() << std::endl;
+    std::cout << frac.get_denominator() << std::endl;
+    std::cout << frac.reciprocal() << std::endl;
+    frac.normalise();
+    std::cout << frac << std::endl;
+    std::cout << frac + reciprocal_frac << std::endl;
+
 
     return 0;
 }
