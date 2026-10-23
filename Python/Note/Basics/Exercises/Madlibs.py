@@ -1,0 +1,12 @@
+adj1 = input("Input an adjective: ")
+number = int(input("Input a number: "))
+n1 = input("Input a noun: ")
+n2 = input("Input a noun: ")
+adj2 = input("Input an ajdective: ")
+v = input("Input a verb ending in ing: ")
+adj3 = input("Input the final adjective: ")
+
+print(f"Today, I went to a {adj1} zoo.")
+print(f"In the exhibit, I saw {number} {n1}s.")
+print(f"One of the {n1}s was {adj2} and {v}")
+print(f"I was {adj3}.")

@@ -49,13 +49,19 @@ Undirected edge: an edge between A and B can be traversed in either direction. (
 ![Directed_edge](Illustrations/GraphTheory_Directed.drawio.svg)  
 Directed edge: A &rarr; B does not imply B &rarr; A (Directions are specified)
 
-### Self-loop
+#### Self-loop
 
 ![Self_loop](Illustrations/GraphTheory_Self_loop.drawio.svg)
 
 - A node directed to itself is called a self-loop.
 - In undirected graph, self-loop is not allowed.
 - In directed graph, self-loop is generally allowed `unless` specified otherwise.
+
+#### Parallel edges
+
+![Parallel_edges](Illustrations/GraphTheory_ParallelEdges.drawio.svg)
+
+Multiple distinct edges connecting the same pair of vertices.
 
 ## Standard Terminology
 
@@ -78,6 +84,11 @@ Directed edge: A &rarr; B does not imply B &rarr; A (Directions are specified)
 - A `connected graph` with at least on vertex has at least one connected component
 - A `disconnected graph` has two or more connected components
   - Within a disconnected graph, there could be a vertex that forms a component of its own; hence it is called an isolated vertex (don't mistake it with a graph containting only one vertex)  
+
+### Directed Connectivity
+
+- Strongly connected
+- Weekly connected
 
 ![Disconnected_and_Connected](Illustrations/GraphTheory_Disconnected_Connected.drawio.svg)  
 The illustration above depicts Graph G as a disconnected graph with connected components A B C and isolated vertex D. Graph A contains vertex D, the only connected component in the graph.
@@ -104,8 +115,6 @@ An adjacency matrix is a square matrix representing whether pairs of vertices in
 
 In other words, adjacency matrix is a way to represent a finite graph in a computer, or more specifically, programming languages.
 
-The representation of adjacency matrix for a graph varies depending on the directive and the complexity of the graph (weighted or unweighted)
-
 1. Unidrected and unweighted graph
 2. Directed and unweighted graph
 3. Undirected and weighted graph
@@ -123,7 +132,63 @@ Given graph $G = (V, E)$:
 |3|1|0|1|0|0|
 |4|0|0|1|0|0|
 
-### Adjacent list
+Notice that it is symmetric $A[i][j] = A[j][i]$
+
+Here's how I interpret the matrix:
+
+- $A[i][j] = 1$ when node i adjacent to node j
+- $A[i][j] = 2$ when there is no edge between them.
+
+An instance of `Directed and unweighted graph`:  
+![Adjacency_matirx_of_DirectedUnweighted](Illustrations/GraphTheory_DirectedAdjacencyList.drawio.svg)  
+
+| |0|1|2|3|4|
+|-|-|-|-|-|-|
+|0|0|0|0|1|0|
+|1|1|0|1|0|1|
+|2|1|0|0|0|1|
+|3|1|0|1|0|0|
+|4|0|0|0|0|0|
+
+Notice that it isn't NECESSARILY symmetric.
+
+Here's how I interpret the matrix:
+
+- $A[i][j] = 1$ if there is a directed edge directed from i to j
+- $A[i][j] = 0$ if there isn't so
+
+### Adjacency list
+
+An adjacency list is a data structure used to represent a graph where each vertex stores its neighbouring vertices
+
+Similar to adjacency matrix, the representation of adjacency list for a graph varies depending on the directive and the complexity of the graph (weighted or unweighted):
+
+1. Undirected graph
+2. Directed graph
+3. Undirected and weighted graph
+4. Directed and weighted graph
+
+For instance, an adjacency list for the previous `undirected graph`:  
+![Adjacency_Example](Illustrations/GraphTheory_AdjacencyExample.drawio.svg)  
+
+|Vertex|Neighbours|
+|-|-|
+|0|1, 3|
+|1|0, 2|
+|2|1, 3, 4|
+|3|0, 2|
+|4|2|
+
+Another instance for `directed graph`:  
+![Adjacency_list_Directed](Illustrations/GraphTheory_DirectedAdjacencyList.drawio.svg)
+
+|Vertex|Neighbours|
+|-|-|
+|0|3|
+|1|0, 2, 4|
+|2|0, 4|
+|3|0, 2|
+|4|Desolated|
 
 ## Types of Graphs
 
